@@ -1,7 +1,7 @@
 # converting the pdf to image
 from pdf2image import convert_from_path
 # Store Pdf with convert_from_path function
-images = convert_from_path('C:/Users/COMPUTER/Downloads/5Matrices-and-Determinants-Notes-English.pdf', poppler_path = r'C:\Program Files\poppler-24.08.0\Library\bin')
+images = convert_from_path('C:/Users/COMPUTER/Downloads/Money And Credit_Shobhit Nirwan.pdf', poppler_path = r'C:\Program Files\poppler-24.08.0\Library\bin')
 import PyPDF2
 
 pdfList =[]
