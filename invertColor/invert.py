@@ -2,8 +2,9 @@
 from pdf2image import convert_from_path
 # Store Pdf with convert_from_path function
 images = convert_from_path('C:/Users/COMPUTER/Downloads/5Matrices-and-Determinants-Notes-English.pdf', poppler_path = r'C:\Program Files\poppler-24.08.0\Library\bin')
+import PyPDF2
 
-
+pdfList =[]
 for i in range(len(images)):
   
       # Save pages as images in the pdf
@@ -26,18 +27,41 @@ for i in range(len(images)):
     # converting back to pdf
     import img2pdf
     import os
+    
     inverted_image.save(f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/inverted_image{i}.jpg") 
+    inverted_img_path = f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/inverted_image{i}.jpg"
+    with Image.open(inverted_img_path) as finalimg:
+        pdf = img2pdf.convert(finalimg.filename)
+        with open( f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/pdfs/pdf{i}.pdf" , "wb") as file:
+            file.write(pdf)
+            print(f"converted {finalimg} to pdf{i}")
+            pdfList.append(f"pdf{i}")
     
-
-    from fpdf import FPDF
-    pdf = FPDF()
-    # imagelist is the list with all image filenames
-
-    imageList =[]
-    for i in range(len(images)):
-        imageList.append(f"inverted_image{i}.jpg")
     
+   
 
 
-    with open(r"C:\Users\COMPUTER\Desktop\PDFtools\invertColor\finalPDF\final.pdf", "wb") as f:
-      f.write(img2pdf.convert([open(f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/{i}", "rb") for i in os.listdir('C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/') if i.endswith(".jpg")]))
+    # with open(r"C:\Users\COMPUTER\Desktop\PDFtools\invertColor\finalPDF\final.pdf", "wb") as f:
+    #   f.write(img2pdf.convert([open(f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/{i}", "rb") for i in os.listdir('C:/Users/COMPUTER/Desktop/PDFtools/invertColor/invertedimages/') if i.endswith(".jpg")]))
+
+
+# os.chdir(r"C:\Users\COMPUTER\Desktop\PDFtools\invertColor\pdfs")
+# pdfs = os.listdir()
+# pdfs.sort()
+
+pdfMerge = PyPDF2.PdfMerger()
+
+# loop through each pdf page
+print(pdfList)
+for pdf in pdfList:
+  print(pdf)
+  # open each pdf
+  with open(f"C:/Users/COMPUTER/Desktop/PDFtools/invertColor/pdfs/{pdf}.pdf", 'rb') as pdfFile:
+    # merge each file
+    pdfMerge.append(PyPDF2.PdfReader(pdfFile))
+
+# write the merged pdf 
+pdfMerge.write(r'C:\Users\COMPUTER\Desktop\PDFtools\invertColor\finalPDF\final.pdf')
+
+# download the final pdf
+# files.download('merged.pdf')
